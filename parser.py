@@ -4,7 +4,19 @@ import string
 import random
 from tqdm import tqdm
 
+"""
+Assumptions made for the purpose of simplicity:
 
+    - All the scripts begin with <pre> tag (ignore otherwise). 
+
+    - Character names prior to their dialogues have a similar 
+      indentation in the raw html script --> I figured out the 
+      indentation values that pertain to the most names through 
+      a constant denominated name_tolerance_ratio (i.e. if a 
+      sufficiently large percentage of the words for a given 
+      indentation are names (as per male.txt and female.txt), 
+      we consider that indentation level to be exclusive for names.
+"""
 alphabet_upper = list(string.ascii_uppercase)
 
 #just some that i noticed could be used as a reference to a man or a woman 
@@ -28,9 +40,10 @@ def get_names_list(filename):
 
 class IMDBParser():
     """Class to parse IMDB scripts provided."""
-    def __init__(self, num_scripts=30, name_tolerance_ratio=0.6):
+    def __init__(self, num_scripts=30, name_tolerance_ratio=0.6, min_interactions=50):
         self.scripts_dir = 'scripts_html'
         self.num_scripts = num_scripts
+        self.min_interactions = min_interactions
 
         #person tags
         self.male_names = get_names_list('male.txt')
@@ -178,7 +191,7 @@ class IMDBParser():
 
             #get dialogue between characters
             dialogue_script = self.get_dialogue_script(raw_script, indents)
-            if len(dialogue_script) > 50: #minimum number of interactions between characters
+            if len(dialogue_script) > self.min_interactions: #minimum number of interactions between characters
                 scripts[script_title] = dialogue_script
                 parsed_files += 1
 

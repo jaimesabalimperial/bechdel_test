@@ -16,6 +16,9 @@ Assumptions made for the purpose of simplicity:
       sufficiently large percentage of the words for a given 
       indentation are names (as per male.txt and female.txt), 
       we consider that indentation level to be exclusive for names.
+
+PS: I made use of the tqdm library for the sake of not going mad while 
+waiting for the scripts to be parsed and analysed. 
 """
 alphabet_upper = list(string.ascii_uppercase)
 
